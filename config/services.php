@@ -35,4 +35,9 @@ return [
         ],
     ],
 
+    'nyt_books' => [
+        'api_key' => env('NY_TIMES_API_KEY'),
+        'api_url' => env('NY_TIMES_BOOKS_URL'),
+    ],
+
 ];

@@ -1,0 +1,41 @@
+{
+    "status": "OK",
+    "copyright": "Copyright (c) 2025 The New York Times Company. All Rights Reserved.",
+    "num_results": 250,
+    "results": {
+        "bestsellers_date": "2025-05-04",
+        "previous_published_date": "2025-05-11",
+        "published_date": "2025-05-18",
+        "next_published_date": "2025-05-25",
+        "lists": [
+            {
+                "list_id": 1,
+                "list_name": "Hardcover Fiction",
+                "list_name_encoded": "hardcover-fiction",
+                "display_name": "Hardcover Fiction",
+                "updated": "WEEKLY",
+                "books": [
+                    {
+                        "rank": 1,
+                        "rank_last_week": 1,
+                        "weeks_on_list": 2,
+                        "asterisk": 0,
+                        "dagger": 0,
+                        "primary_isbn13": "9780593441299",
+                        "publisher": "Berkley",
+                        "description": "A writer looking for her big break competes against a Pulitzer winner to tell the story of an octogenarian with a storied past.",
+                        "title": "Great Big Beautiful Life",
+                        "author": "Emily Henry",
+                        "contributor": "Emily Henry",
+                        "contributor_note": "",
+                        "book_image": "https://static01.nyt.com/bestsellers/images/9780593441299.jpg",
+                        "amazon_product_url": "https://www.amazon.com/dp/059344129X?tag=thenewyorktim-20",
+                        "age_group": "",
+                        "book_review_link": "",
+                        "sunday_review_link": ""
+                    }
+                ]
+            }
+        ]
+    }
+}

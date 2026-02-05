@@ -112,6 +112,11 @@ return [
     |
     */
 
-    'prefix' => env('CACHE_PREFIX', Str::slug((string) env('APP_NAME', 'laravel')).'-cache-'),
+    'prefix' => env('CACHE_PREFIX', Str::slug((string) env('APP_NAME', 'laravel')) . '-cache-'),
+
+    'ttl' => [
+        'default' => env('CACHE_TTL_DEFAULT', 60 * 60 * 12), // 12 hours
+        'request_definition' => env('CACHE_TTL_REQUEST_DEFINITION', 60 * 60), // 1 hour
+    ]
 
 ];

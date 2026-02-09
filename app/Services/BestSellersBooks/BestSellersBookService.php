@@ -4,6 +4,7 @@ namespace App\Services\BestSellersBooks;
 
 use App\Services\AbstractExternalService;
 use App\Services\BestSellersBooks\DTO\BestSellersList;
+use App\Services\BestSellersBooks\DTO\Book;
 use App\Services\BestSellersBooks\Enums\BookList;
 use App\Services\BestSellersBooks\RequestDefinitions\GetBooksByListAndDate;
 use App\Services\BestSellersBooks\RequestDefinitions\GetBooksByListName;
@@ -19,10 +20,36 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class BestSellersBookService extends AbstractExternalService
 {
-    public function fetchListsOverview(
-        Carbon|string|null $date = null,
-        bool $asJson = true
-    ): array|string {
+    public static function externalServiceID(): int
+    {
+        return self::externalService()->id();
+    }
+
+    public static function externalService(): ExternalService
+    {
+        return ExternalService::NewYorkTimesBooks;
+    }
+
+    public function getBooks(): Collection
+    {
+        $response = $this->getListsOverview();
+
+        $books = data_get($response, 'results.lists.*.books', []);
+
+        return collect($books)->flatten(1)->mapInto(Book::class);
+    }
+
+    public function getLists(): Collection
+    {
+        $response = $this->getListsOverview();
+
+        $lists = data_get($response, 'results.lists', []);
+
+        return collect($lists)->mapInto(BestSellersList::class);
+    }
+
+    public function getListsOverview(Carbon|string|null $date = null): array|string
+    {
         /**
          * @note: If the value passed into `Carbon::parse()` is null,
          * a date instance is returned similar to calling `now()`.
@@ -43,32 +70,11 @@ class BestSellersBookService extends AbstractExternalService
             $this->handleResponseErrors($response);
         }
 
-        return $asJson ? $response->body() : $response->json();
+        return $response->json();
     }
 
-    public function fetchLists(bool $asJson = true): Collection
+    public function getBooksByListName(BookList|string $bookList): Collection
     {
-        $response = $this->fetchListsOverview();
-
-        $lists = data_get($response, 'results.lists');
-
-        return collect($lists)->map(
-            function (array $list) use ($asJson) {
-                $list = new BestSellersList(
-                    $list['list_id'],
-                    $list['list_name'],
-                    $list['list_name_encoded']
-                );
-
-                return $asJson ? $list->toArray() : $list;
-            }
-        );
-    }
-
-    public function fetchBooksByListName(
-        BookList|string $bookList,
-        bool $asJson = true
-    ): array|string {
         $listName = BookList::tryFromMixed($bookList);
 
         if (is_null($listName)) {
@@ -83,14 +89,15 @@ class BestSellersBookService extends AbstractExternalService
             $this->handleResponseErrors($response);
         }
 
-        return $asJson ? $response->body() : $response->json();
+        $books = data_get($response->json(), 'results.books', []);
+
+        return collect($books)->mapInto(Book::class);
     }
 
-    public function fetchBooksByListAndDate(
+    public function getBooksByListAndDate(
         BookList|string $bookList,
         Carbon|string $date,
-        bool $asJson = true
-    ): array|string {
+    ): Collection {
         $listName = BookList::tryFromMixed($bookList);
 
         if (is_null($listName)) {
@@ -103,7 +110,7 @@ class BestSellersBookService extends AbstractExternalService
             throw new InvalidArgumentException('Improper date provided');
         }
 
-        $request = new GetBooksByListAndDate($listName, $date);
+        $request = new GetBooksByListAndDate($listName, $publishedDate);
 
         $response = $request->send();
 
@@ -111,7 +118,9 @@ class BestSellersBookService extends AbstractExternalService
             $this->handleResponseErrors($response);
         }
 
-        return $asJson ? $response->body() : $response->json();
+        $books = data_get($response->json(), 'results.books', []);
+
+        return collect($books)->mapInto(Book::class);
     }
 
     private function handleResponseErrors($response)
@@ -124,19 +133,9 @@ class BestSellersBookService extends AbstractExternalService
             ->implode(', ');
 
         return match ($response->status()) {
-            Response::HTTP_UNAUTHORIZED => throw new UnauthorizedException($message),
-            Response::HTTP_NOT_FOUND => throw new NotFoundHttpException($message),
+            Response::HTTP_UNAUTHORIZED => throw new UnauthorizedException(),
+            Response::HTTP_NOT_FOUND => throw new NotFoundHttpException("Resource not found: {$message}"),
             default => throw new Exception('An unexpected error has occurred')
         };
-    }
-
-    public static function externalServiceID(): int
-    {
-        return self::externalService()->id();
-    }
-
-    public static function externalService(): ExternalService
-    {
-        return ExternalService::NewYorkTimesBooks;
     }
 }

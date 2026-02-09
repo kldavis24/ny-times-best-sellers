@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Unit\Services\BestSellersBooks;
 
 use App\Services\BestSellersBooks\BestSellersBookService;
 use App\Services\BestSellersBooks\Enums\BookList;
@@ -14,7 +14,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class BestSellerBookServiceTest extends TestCase
 {
-    public function testFetchListOverviewSuccess()
+    public function testGetListOverviewSuccess()
     {
         $payload = payload('nyt_best_sellers_books/list_overview/success.json');
 
@@ -22,50 +22,14 @@ class BestSellerBookServiceTest extends TestCase
             'api.nytimes.com/*' => Http::response($payload, Response::HTTP_OK),
         ]);
 
-        $response = (new BestSellersBookService())->fetchListsOverview(asJson: false);
+        $response = (new BestSellersBookService())->getListsOverview();
 
         $results = data_get($response, 'results');
 
         $this->assertNotNull($results);
     }
 
-    public function testFetchListOverviewAsJson()
-    {
-        $payload = payload('nyt_best_sellers_books/list_overview/success.json');
-
-        Http::fake([
-            'api.nytimes.com/*' => Http::response($payload, Response::HTTP_OK),
-        ]);
-
-        // the `fetchListsOverview()` asJson argument defaults to `true`
-        $response = (new BestSellersBookService())->fetchListsOverview();
-
-        $this->assertIsString($response);
-        $this->assertJson($response);
-
-        $results = data_get(json_decode($response), 'results');
-
-        $this->assertNotNull($results);
-    }
-
-    public function testFetchListOverviewAsArray()
-    {
-        $payload = payload('nyt_best_sellers_books/list_overview/success.json');
-
-        Http::fake([
-            'api.nytimes.com/*' => Http::response($payload, Response::HTTP_OK),
-        ]);
-
-        $response = (new BestSellersBookService())->fetchListsOverview(asJson: false);
-
-        $this->assertIsArray($response);
-
-        $results = data_get($response, 'results');
-
-        $this->assertNotNull($results);
-    }
-
-    public function testFetchListOverviewWithDate()
+    public function testGetListOverviewWithDate()
     {
         $payload = payload('nyt_best_sellers_books/list_overview/success.json');
 
@@ -75,7 +39,7 @@ class BestSellerBookServiceTest extends TestCase
 
         $date = now()->subHours(3);
 
-        $response = (new BestSellersBookService())->fetchListsOverview(date: $date, asJson: false);
+        $response = (new BestSellersBookService())->getListsOverview(date: $date);
 
         $this->assertIsArray($response);
 
@@ -84,7 +48,7 @@ class BestSellerBookServiceTest extends TestCase
         $this->assertNotNull($results);
     }
 
-    public function testFetchListOverviewUnauthorized()
+    public function testGetListOverviewUnauthorized()
     {
         $this->expectException(UnauthorizedException::class);
 
@@ -95,10 +59,10 @@ class BestSellerBookServiceTest extends TestCase
         ]);
 
         // Should throw the expected exception
-        (new BestSellersBookService())->fetchListsOverview();
+        (new BestSellersBookService())->getListsOverview();
     }
 
-    public function testFetchListOverviewNotFound()
+    public function testGetListOverviewNotFound()
     {
         $this->expectException(NotFoundHttpException::class);
         $this->expectExceptionMessage('list not found');
@@ -110,10 +74,10 @@ class BestSellerBookServiceTest extends TestCase
         ]);
 
         // Should throw the expected exception
-        (new BestSellersBookService())->fetchListsOverview();
+        (new BestSellersBookService())->getListsOverview();
     }
 
-    public function testFetchBooksByListNameSuccess()
+    public function testGetBooksByListNameSuccess()
     {
         $payload = payload('nyt_best_sellers_books/books_by_list_name/success.json');
 
@@ -123,53 +87,12 @@ class BestSellerBookServiceTest extends TestCase
 
         $listName = BookList::HardcoverNonfiction;
 
-        $response = (new BestSellersBookService())->fetchBooksByListName(bookList: $listName, asJson: false);
+        $response = (new BestSellersBookService())->getBooksByListName($listName);
 
-        $results = data_get($response, 'results');
-
-        $this->assertNotNull($results);
+        $this->assertNotNull($response);
     }
 
-    public function testFetchBooksByListNameAsJson()
-    {
-        $payload = payload('nyt_best_sellers_books/list_overview/success.json');
-
-        Http::fake([
-            'api.nytimes.com/*' => Http::response($payload, Response::HTTP_OK),
-        ]);
-
-        $listName = BookList::HardcoverNonfiction;
-
-        $response = (new BestSellersBookService())->fetchBooksByListName(bookList: $listName);
-
-        $this->assertIsString($response);
-        $this->assertJson($response);
-
-        $results = data_get(json_decode($response), 'results');
-
-        $this->assertNotNull($results);
-    }
-
-    public function testFetchBooksByListNameAsArray()
-    {
-        $payload = payload('nyt_best_sellers_books/list_overview/success.json');
-
-        Http::fake([
-            'api.nytimes.com/*' => Http::response($payload, Response::HTTP_OK),
-        ]);
-
-        $listName = BookList::HardcoverNonfiction;
-
-        $response = (new BestSellersBookService())->fetchBooksByListName(bookList: $listName, asJson: false);
-
-        $this->assertIsArray($response);
-
-        $results = data_get($response, 'results');
-
-        $this->assertNotNull($results);
-    }
-
-    public function testFetchBooksByListNameUnauthorized()
+    public function testGetBooksByListNameUnauthorized()
     {
         $this->expectException(UnauthorizedException::class);
 
@@ -182,10 +105,10 @@ class BestSellerBookServiceTest extends TestCase
         // Should throw the expected exception
         $listName = BookList::HardcoverNonfiction;
 
-        (new BestSellersBookService())->fetchBooksByListName(bookList: $listName);
+        (new BestSellersBookService())->getBooksByListName($listName);
     }
 
-    public function testFetchBooksByListNameNotFound()
+    public function testGetBooksByListNameNotFound()
     {
         $this->expectException(NotFoundHttpException::class);
         $this->expectExceptionMessage('list not found');
@@ -199,10 +122,10 @@ class BestSellerBookServiceTest extends TestCase
         $listName = BookList::HardcoverNonfiction;
 
         // Should throw the expected exception
-        (new BestSellersBookService())->fetchBooksByListName(bookList: $listName);
+        (new BestSellersBookService())->getBooksByListName($listName);
     }
 
-    public function testFetchBooksByListNameThrowsWithInvalidList()
+    public function testGetBooksByListNameThrowsWithInvalidList()
     {
         $this->expectException(InvalidArgumentException::class);
 
@@ -213,10 +136,10 @@ class BestSellerBookServiceTest extends TestCase
         ]);
 
         // Should throw the expected exception
-        (new BestSellersBookService())->fetchBooksByListName('invalid');
+        (new BestSellersBookService())->getBooksByListName('invalid');
     }
 
-    public function testFetchBooksByListAndDateSuccess()
+    public function testGetBooksByListAndDateSuccess()
     {
         $payload = payload('nyt_best_sellers_books/books_by_list_name/success.json');
 
@@ -228,68 +151,15 @@ class BestSellerBookServiceTest extends TestCase
 
         $date = Carbon::make('2025-06-06');
 
-        $response = (new BestSellersBookService())->fetchBooksByListAndDate(
-            bookList: $listName,
-            date: $date,
-            asJson: false
-        );
-
-        $results = data_get($response, 'results');
-
-        $this->assertNotNull($results);
-    }
-
-    public function testFetchBooksByListAndDateAsJson()
-    {
-        $payload = payload('nyt_best_sellers_books/list_overview/success.json');
-
-        Http::fake([
-            'api.nytimes.com/*' => Http::response($payload, Response::HTTP_OK),
-        ]);
-
-        $listName = BookList::HardcoverNonfiction;
-
-        $date = Carbon::make('2025-06-06');
-
-        $response = (new BestSellersBookService())->fetchBooksByListAndDate(
+        $response = (new BestSellersBookService())->getBooksByListAndDate(
             bookList: $listName,
             date: $date,
         );
 
-        $this->assertIsString($response);
-        $this->assertJson($response);
-
-        $results = data_get(json_decode($response), 'results');
-
-        $this->assertNotNull($results);
+        $this->assertNotNull($response);
     }
 
-    public function testFetchBooksByListAndDateAsArray()
-    {
-        $payload = payload('nyt_best_sellers_books/list_overview/success.json');
-
-        Http::fake([
-            'api.nytimes.com/*' => Http::response($payload, Response::HTTP_OK),
-        ]);
-
-        $listName = BookList::HardcoverNonfiction;
-
-        $date = Carbon::make('2025-06-06');
-
-        $response = (new BestSellersBookService())->fetchBooksByListAndDate(
-            bookList: $listName,
-            date: $date,
-            asJson: false
-        );
-
-        $this->assertIsArray($response);
-
-        $results = data_get($response, 'results');
-
-        $this->assertNotNull($results);
-    }
-
-    public function testFetchBooksByListAndDateUnauthorized()
+    public function testGetBooksByListAndDateUnauthorized()
     {
         $this->expectException(UnauthorizedException::class);
 
@@ -304,14 +174,13 @@ class BestSellerBookServiceTest extends TestCase
 
         $date = Carbon::make('2025-06-06');
 
-        (new BestSellersBookService())->fetchBooksByListAndDate(
+        (new BestSellersBookService())->getBooksByListAndDate(
             bookList: $listName,
             date: $date,
-            asJson: false
         );
     }
 
-    public function testFetchBooksByListAndDateNotFound()
+    public function testGetBooksByListAndDateNotFound()
     {
         $this->expectException(NotFoundHttpException::class);
         $this->expectExceptionMessage('list not found');
@@ -326,14 +195,13 @@ class BestSellerBookServiceTest extends TestCase
 
         $date = Carbon::make('2025-06-06');
 
-        (new BestSellersBookService())->fetchBooksByListAndDate(
+        (new BestSellersBookService())->getBooksByListAndDate(
             bookList: $listName,
             date: $date,
-            asJson: false
         );
     }
 
-    public function testFetchBooksByListAndDateThrowsWithInvalidList()
+    public function testGetBooksByListAndDateThrowsWithInvalidList()
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Improper book list name provided');
@@ -346,14 +214,13 @@ class BestSellerBookServiceTest extends TestCase
 
         $date = Carbon::make('2025-06-06');
 
-        (new BestSellersBookService())->fetchBooksByListAndDate(
+        (new BestSellersBookService())->getBooksByListAndDate(
             bookList: 'invalid',
             date: $date,
-            asJson: false
         );
     }
 
-    public function testFetchBooksByListAndDateThrowsWithInvalidDate()
+    public function testGetBooksByListAndDateThrowsWithInvalidDate()
     {
         $this->expectException(InvalidArgumentException::class);
 
@@ -365,12 +232,9 @@ class BestSellerBookServiceTest extends TestCase
 
         $listName = BookList::HardcoverNonfiction;
 
-        $date = Carbon::make('2025-06-06');
-
-        (new BestSellersBookService())->fetchBooksByListAndDate(
+        (new BestSellersBookService())->getBooksByListAndDate(
             bookList: $listName,
             date: 'invalid',
-            asJson: false
         );
     }
 }

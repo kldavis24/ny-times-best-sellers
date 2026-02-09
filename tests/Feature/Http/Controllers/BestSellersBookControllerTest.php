@@ -118,36 +118,69 @@ class BestSellersBookControllerTest extends TestCase
 
     public function testBooksByListNameValidation()
     {
-        $this->getJson(route('v1.books_by_list', ['list' => 'invalid']))
-            ->assertUnprocessable();
+        $response = $this->getJson(route('v1.books_by_list', ['list' => 'invalid']));
+
+        $response->assertUnprocessable();
+
+        $errors = data_get($response, 'errors');
+
+        $this->assertArrayHasKey('list', $errors);
+
+        $this->assertEquals('The selected list is invalid.', data_get($errors, 'list.0'));
     }
 
     public function testBooksByListNameAndDateValidation()
     {
-        $this->getJson(
+        $response = $this->getJson(
             route(
                 'v1.books_by_list_and_date',
                 ['list' => 'invalid', 'date' => 'invalid']
             )
-        )->assertUnprocessable();
+        );
+
+        $response->assertUnprocessable();
+
+        $errors = data_get($response, 'errors');
+
+        $this->assertArrayHasKey('published_date', $errors);
+        $this->assertArrayHasKey('list', $errors);
 
         $list = BookList::ChildrensMiddleGradeHardcover;
 
-        $this->getJson(
+        $response = $this->getJson(
             route(
                 'v1.books_by_list_and_date',
                 ['list' => $list, 'date' => 'invalid']
             )
-        )->assertUnprocessable();
+        );
+
+        $response->assertUnprocessable();
+
+        $errors = data_get($response, 'errors');
+
+        $this->assertArrayHasKey('published_date', $errors);
+        $this->assertArrayNotHasKey('list', $errors);
 
         $date = now()->subMonth(1);
 
         // We expect this 422 due to the date above not meeting the format expectations
-        $this->getJson(
+        $response = $this->getJson(
             route(
                 'v1.books_by_list_and_date',
                 ['list' => $list, 'date' => $date]
             )
-        )->assertUnprocessable();
+        );
+
+        $response->assertUnprocessable();
+
+        $errors = data_get($response, 'errors');
+
+        $this->assertArrayHasKey('published_date', $errors);
+        $this->assertArrayNotHasKey('list', $errors);
+
+        $this->assertEquals(
+            'The published date field must match the format Y-m-d.',
+            data_get($errors, 'published_date.0')
+        );
     }
 }

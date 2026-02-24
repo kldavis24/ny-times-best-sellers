@@ -15,53 +15,12 @@ use RuntimeException;
 
 abstract class RequestDefinition extends GenericRequestDefinition
 {
-    /**
-     * HTTP 'GET' method.
-     *
-     * @var string
-     */
     public const HTTP_GET = 'GET';
-
-    /**
-     * HTTP 'POST' method.
-     *
-     * @var string
-     */
     public const HTTP_POST = 'POST';
-
-    /**
-     * HTTP 'PUT' method.
-     *
-     * @var string
-     */
     public const HTTP_PUT = 'PUT';
-
-    /**
-     * HTTP 'PATCH' method.
-     *
-     * @var string
-     */
     public const HTTP_PATCH = 'PATCH';
-
-    /**
-     * HTTP 'DELETE' method.
-     *
-     * @var string
-     */
     public const HTTP_DELETE = 'DELETE';
-
-    /**
-     * HTTP 'HEAD' method.
-     *
-     * @var string
-     */
     public const HTTP_HEAD = 'HEAD';
-
-    /**
-     * HTTP 'OPTIONS' method.
-     *
-     * @var string
-     */
     public const HTTP_OPTIONS = 'OPTIONS';
 
     private bool $isCacheAware = false;
@@ -80,6 +39,8 @@ abstract class RequestDefinition extends GenericRequestDefinition
 
     /**
      * Headers to apply to the request.
+     *
+     * @link https://docs.guzzlephp.org/en/stable/request-options.html#headers
      */
     public function headers(): array
     {
@@ -190,7 +151,7 @@ abstract class RequestDefinition extends GenericRequestDefinition
     }
 
     /**
-     * After how many seconds should Gizzle kill the request?
+     * After how many seconds should Guzzle kill the request?
      */
     public function timeout(): int
     {

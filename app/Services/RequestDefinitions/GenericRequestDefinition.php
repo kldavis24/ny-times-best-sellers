@@ -10,18 +10,8 @@ use Illuminate\Support\Facades\Validator;
 
 abstract class GenericRequestDefinition
 {
-    /**
-     * Default value for max execution within decay window.
-     *
-     * @var int
-     */
     public const MAX_EXECUTION_WITHIN_DECAY_WINDOW = 2;
 
-    /**
-     * Default value for decay window seconds.
-     *
-     * @var int
-     */
     public const DECAY_WINDOW_SECONDS = 15;
 
     /**
@@ -40,35 +30,20 @@ abstract class GenericRequestDefinition
      */
     abstract public function uniqueID(): string;
 
-    /**
-     * Is the request aware of of the current cache?
-     */
     abstract public function isCacheAware(): bool;
 
-    /**
-     * What is the request's cache TTL?
-     */
     abstract public function cacheTtl(): int;
 
-    /**
-     * What is the external service ID this request definition is associated with?
-     */
     abstract public function externalServiceID(): ?int;
 
-    /**
-     * What is the external service name this request definition is associated with?
-     */
     abstract public function externalService(): ?ExternalService;
 
-    /**
-     * Customize options for the request.
-     */
     abstract public function options(): array;
 
     /**
      * Validation rules to apply to the request.
      *
-     * @link https://laravel.com/docs/9.x/validation#available-validation-rules
+     * @link https://laravel.com/docs/12.x/validation#available-validation-rules
      */
     abstract public function rules(): array;
 
@@ -91,12 +66,6 @@ abstract class GenericRequestDefinition
         return $this->send();
     }
 
-    /**
-     * Validate the request data, and throw a ValidationException if one or
-     * more validation rules fail.
-     *
-     * @throws ValidationException
-     */
     public function validate(): static
     {
         $validator = $this->validator();
@@ -128,10 +97,6 @@ abstract class GenericRequestDefinition
         );
     }
 
-    /**
-     * Return the message bag of validation errors. If validation hasn't
-     * been performed yet, it will be.
-     */
     public function errors(): MessageBag
     {
         return $this->validator()->errors();
@@ -164,9 +129,6 @@ abstract class GenericRequestDefinition
         return $this->validator()->passes();
     }
 
-    /**
-     * Invert validation passing inquiry.
-     */
     public function isInvalid(): bool
     {
         return !$this->isValid();
@@ -183,7 +145,7 @@ abstract class GenericRequestDefinition
     }
 
     /**
-     * Collect all options for the request.
+     * Gather all options for the request.
      */
     public function allOptions(): array
     {
@@ -200,7 +162,7 @@ abstract class GenericRequestDefinition
 
     /**
      * Description of the request definition. By default, this is the FQN
-     * for the class on thebottom of the concrete class.
+     * for the class on the bottom of the concrete class.
      */
     public function description(): ?string
     {

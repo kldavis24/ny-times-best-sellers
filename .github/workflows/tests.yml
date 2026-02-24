@@ -7,12 +7,12 @@ on:
     branches: ["**"]
 
 jobs:
-  tests:
+  unit-tests:
+    name: Unit Tests
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
@@ -22,16 +22,41 @@ jobs:
           coverage: none
 
       - name: Install dependencies
-        run: |
-          composer install --no-interaction --prefer-dist --no-progress
+        run: composer install --no-interaction --prefer-dist --no-progress
 
       - name: Copy .env
-        run: |
-          cp .env.example .env
+        run: cp .env.example .env
 
       - name: Generate app key
-        run: |
-          php artisan key:generate
+        run: php artisan key:generate
+
+      - name: Run unit tests
+        env:
+          APP_ENV: testing
+        run: php artisan test --testsuite=Unit
+
+  feature-tests:
+    name: Feature Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.4"
+          extensions: mbstring, pdo, pdo_sqlite
+          coverage: none
+
+      - name: Install dependencies
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Copy .env
+        run: cp .env.example .env
+
+      - name: Generate app key
+        run: php artisan key:generate
 
       - name: Prepare SQLite database
         run: |
@@ -42,14 +67,11 @@ jobs:
         env:
           DB_CONNECTION: sqlite
           DB_DATABASE: database/database.sqlite
-        run: |
-          php artisan migrate --force
+        run: php artisan migrate --force
 
-      - name: Run tests
+      - name: Run feature tests
         env:
+          APP_ENV: testing
           DB_CONNECTION: sqlite
           DB_DATABASE: database/database.sqlite
-          APP_ENV: testing
-          APP_DEBUG: true
-        run: |
-          php artisan test
+        run: php artisan test --testsuite=Feature

@@ -12,9 +12,8 @@ return \PHPStan\Cache\CacheItem::__set_state(array(
          'namespace' => 'App\\Providers',
          'uses' => 
         array (
-          'bookspolicy' => 'App\\Policies\\BooksPolicy',
-          'listspolicy' => 'App\\Policies\\ListsPolicy',
-          'userspolicy' => 'App\\Policies\\UsersPolicy',
+          'bookpolicy' => 'App\\Policies\\BookPolicy',
+          'listpolicy' => 'App\\Policies\\ListPolicy',
           'gate' => 'Illuminate\\Support\\Facades\\Gate',
           'serviceprovider' => 'Illuminate\\Support\\ServiceProvider',
         ),
@@ -39,9 +38,8 @@ return \PHPStan\Cache\CacheItem::__set_state(array(
          'namespace' => 'App\\Providers',
          'uses' => 
         array (
-          'bookspolicy' => 'App\\Policies\\BooksPolicy',
-          'listspolicy' => 'App\\Policies\\ListsPolicy',
-          'userspolicy' => 'App\\Policies\\UsersPolicy',
+          'bookpolicy' => 'App\\Policies\\BookPolicy',
+          'listpolicy' => 'App\\Policies\\ListPolicy',
           'gate' => 'Illuminate\\Support\\Facades\\Gate',
           'serviceprovider' => 'Illuminate\\Support\\ServiceProvider',
         ),
@@ -66,9 +64,8 @@ return \PHPStan\Cache\CacheItem::__set_state(array(
          'namespace' => 'App\\Providers',
          'uses' => 
         array (
-          'bookspolicy' => 'App\\Policies\\BooksPolicy',
-          'listspolicy' => 'App\\Policies\\ListsPolicy',
-          'userspolicy' => 'App\\Policies\\UsersPolicy',
+          'bookpolicy' => 'App\\Policies\\BookPolicy',
+          'listpolicy' => 'App\\Policies\\ListPolicy',
           'gate' => 'Illuminate\\Support\\Facades\\Gate',
           'serviceprovider' => 'Illuminate\\Support\\ServiceProvider',
         ),
@@ -91,7 +88,7 @@ return \PHPStan\Cache\CacheItem::__set_state(array(
     ),
     1 => 
     array (
-      '/Users/kevindavis/Sites/Laravel/ny-times-best-sellers/app/Providers/AppServiceProvider.php' => '0a6bafb294d4e9f2abfaa675bf347d6794ff57ca02c10807ca9475987aef230b',
+      '/Users/kevindavis/Sites/Laravel/ny-times-best-sellers/app/Providers/AppServiceProvider.php' => '568b85d3cca20457ecff3653928934e893c6da3ed612305b0a7dffe24e8021de',
     ),
   ),
 ));

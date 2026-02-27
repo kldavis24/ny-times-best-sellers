@@ -4,9 +4,8 @@ namespace App\Policies;
 
 use App\Models\User;
 use App\Users\Enums\Permission;
-use App\Users\Enums\Role;
 
-class ListsPolicy
+class ListPolicy
 {
     public function viewLists(User $user): bool
     {

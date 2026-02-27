@@ -5,7 +5,7 @@ namespace App\Policies;
 use App\Models\User;
 use App\Users\Enums\Permission;
 
-class BooksPolicy
+class BookPolicy
 {
     public function viewBooks(User $user): bool
     {

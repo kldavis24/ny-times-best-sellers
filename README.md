@@ -22,9 +22,12 @@ This small API example makes use of the [New York Times Best Seller Books API](h
 - Generate an app key with `php artisan key:generate`
 - Run the included Laravel migrations with `php artisan migrate`
 - Host the project locally with `php artisan serve`
+- Create the initial `Admin` user with `php artisan app:create-admin-user`
+    - By default the email is `admin@email.com` and the password is `password`
 
 ## Included Endpoints
 
+- `/api/auth/login`
 - `/api/v1/ny-times-best-sellers/books`
 - `/api/v1/ny-times-best-sellers/lists`
 - `/api/v1/ny-times-best-sellers/books/list/{list_name}`

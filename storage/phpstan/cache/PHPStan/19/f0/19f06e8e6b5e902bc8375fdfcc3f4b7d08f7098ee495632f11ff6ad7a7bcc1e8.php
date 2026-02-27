@@ -250,61 +250,9 @@ return \PHPStan\Cache\CacheItem::__set_state(array(
       array (
       ),
     ),
-    '/Users/kevindavis/Sites/Laravel/ny-times-best-sellers/app/Policies/BooksPolicy.php' => 
-    array (
-      0 => '3e6d1044dae72b6030d3749b73e7479f184b7aa2d87ab3ac34c0b8be99ea9ec7',
-      1 => 
-      array (
-        0 => 'app\\policies\\bookspolicy',
-      ),
-      2 => 
-      array (
-        0 => 'app\\policies\\viewbooks',
-        1 => 'app\\policies\\viewbooksbylist',
-        2 => 'app\\policies\\viewbooksbydate',
-        3 => 'app\\policies\\viewbooksbylistanddate',
-      ),
-      3 => 
-      array (
-      ),
-    ),
-    '/Users/kevindavis/Sites/Laravel/ny-times-best-sellers/app/Policies/ListsPolicy.php' => 
-    array (
-      0 => '023786ea2da51b6a2d1ccfa44fd00344126f21f86a3739ca814e85e06b3da82d',
-      1 => 
-      array (
-        0 => 'app\\policies\\listspolicy',
-      ),
-      2 => 
-      array (
-        0 => 'app\\policies\\viewlists',
-        1 => 'app\\policies\\viewlistnames',
-      ),
-      3 => 
-      array (
-      ),
-    ),
-    '/Users/kevindavis/Sites/Laravel/ny-times-best-sellers/app/Policies/UsersPolicy.php' => 
-    array (
-      0 => '172d3183677f050637a38b9d043bf1409e5ca7ca0a88ee4281bd278357c6f758',
-      1 => 
-      array (
-        0 => 'app\\policies\\userspolicy',
-      ),
-      2 => 
-      array (
-        0 => 'app\\policies\\viewusers',
-        1 => 'app\\policies\\createuser',
-        2 => 'app\\policies\\updateuser',
-        3 => 'app\\policies\\deleteuser',
-      ),
-      3 => 
-      array (
-      ),
-    ),
     '/Users/kevindavis/Sites/Laravel/ny-times-best-sellers/app/Providers/AppServiceProvider.php' => 
     array (
-      0 => '0a6bafb294d4e9f2abfaa675bf347d6794ff57ca02c10807ca9475987aef230b',
+      0 => '568b85d3cca20457ecff3653928934e893c6da3ed612305b0a7dffe24e8021de',
       1 => 
       array (
         0 => 'app\\providers\\appserviceprovider',
@@ -795,6 +743,58 @@ return \PHPStan\Cache\CacheItem::__set_state(array(
       array (
         0 => 'app\\users\\enums\\permissions',
         1 => 'app\\users\\enums\\values',
+      ),
+      3 => 
+      array (
+      ),
+    ),
+    '/Users/kevindavis/Sites/Laravel/ny-times-best-sellers/app/Policies/BookPolicy.php' => 
+    array (
+      0 => '360854d8d9490ca7665633f936d34726fb9f6b68001fdfeb085fac542d7cdd57',
+      1 => 
+      array (
+        0 => 'app\\policies\\bookpolicy',
+      ),
+      2 => 
+      array (
+        0 => 'app\\policies\\viewbooks',
+        1 => 'app\\policies\\viewbooksbylist',
+        2 => 'app\\policies\\viewbooksbydate',
+        3 => 'app\\policies\\viewbooksbylistanddate',
+      ),
+      3 => 
+      array (
+      ),
+    ),
+    '/Users/kevindavis/Sites/Laravel/ny-times-best-sellers/app/Policies/ListPolicy.php' => 
+    array (
+      0 => '6ae01a13cc7318be4a8901a3ce573e0a1cd0a5211c0b6ad84db2c046fe4658b7',
+      1 => 
+      array (
+        0 => 'app\\policies\\listpolicy',
+      ),
+      2 => 
+      array (
+        0 => 'app\\policies\\viewlists',
+        1 => 'app\\policies\\viewlistnames',
+      ),
+      3 => 
+      array (
+      ),
+    ),
+    '/Users/kevindavis/Sites/Laravel/ny-times-best-sellers/app/Policies/UserPolicy.php' => 
+    array (
+      0 => '10f52202380c5361f7e41b2c2c1290763a4f99b3d1a6c78a662a22207b7576d9',
+      1 => 
+      array (
+        0 => 'app\\policies\\userpolicy',
+      ),
+      2 => 
+      array (
+        0 => 'app\\policies\\viewusers',
+        1 => 'app\\policies\\createuser',
+        2 => 'app\\policies\\updateuser',
+        3 => 'app\\policies\\deleteuser',
       ),
       3 => 
       array (

@@ -2,9 +2,8 @@
 
 namespace App\Providers;
 
-use App\Policies\BooksPolicy;
-use App\Policies\ListsPolicy;
-use App\Policies\UsersPolicy;
+use App\Policies\BookPolicy;
+use App\Policies\ListPolicy;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
@@ -24,11 +23,11 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         // Define gates for policies not attached to a Model
-        Gate::define('viewLists', [ListsPolicy::class, 'viewLists']);
-        Gate::define('viewListNames', [ListsPolicy::class, 'viewListNames']);
-        Gate::define('viewBooksByList', [BooksPolicy::class, 'viewBooksByList']);
-        Gate::define('viewBooksByDate', [BooksPolicy::class, 'viewBooksByDate']);
-        Gate::define('viewBooksByListAndDate', [BooksPolicy::class, 'viewBooksByListAndDate']);
-        Gate::define('viewBooks', [BooksPolicy::class, 'viewBooks']);
+        Gate::define('viewLists', [ListPolicy::class, 'viewLists']);
+        Gate::define('viewListNames', [ListPolicy::class, 'viewListNames']);
+        Gate::define('viewBooksByList', [BookPolicy::class, 'viewBooksByList']);
+        Gate::define('viewBooksByDate', [BookPolicy::class, 'viewBooksByDate']);
+        Gate::define('viewBooksByListAndDate', [BookPolicy::class, 'viewBooksByListAndDate']);
+        Gate::define('viewBooks', [BookPolicy::class, 'viewBooks']);
     }
 }

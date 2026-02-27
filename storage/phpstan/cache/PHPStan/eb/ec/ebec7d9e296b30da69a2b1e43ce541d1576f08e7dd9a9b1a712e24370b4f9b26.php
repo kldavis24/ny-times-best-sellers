@@ -2,7 +2,7 @@
 
 // odsl-/Users/kevindavis/Sites/Laravel/ny-times-best-sellers/app/Providers/AppServiceProvider.php-PHPStan\BetterReflection\Reflection\ReflectionClass-App\Providers\AppServiceProvider
 return \PHPStan\Cache\CacheItem::__set_state(array(
-   'variableKey' => 'v2-6.65.0.9-8.4.17-0a6bafb294d4e9f2abfaa675bf347d6794ff57ca02c10807ca9475987aef230b',
+   'variableKey' => 'v2-6.65.0.9-8.4.17-568b85d3cca20457ecff3653928934e893c6da3ed612305b0a7dffe24e8021de',
    'data' => 
   array (
     'locatedSource' => 
@@ -26,8 +26,8 @@ return \PHPStan\Cache\CacheItem::__set_state(array(
     'attributes' => 
     array (
     ),
-    'startLine' => 11,
-    'endLine' => 34,
+    'startLine' => 10,
+    'endLine' => 33,
     'startColumn' => 1,
     'endColumn' => 1,
     'parentClassName' => 'Illuminate\\Support\\ServiceProvider',
@@ -67,8 +67,8 @@ return \PHPStan\Cache\CacheItem::__set_state(array(
         'docComment' => '/**
  * Register any application services.
  */',
-        'startLine' => 16,
-        'endLine' => 19,
+        'startLine' => 15,
+        'endLine' => 18,
         'startColumn' => 5,
         'endColumn' => 5,
         'couldThrow' => false,
@@ -104,8 +104,8 @@ return \PHPStan\Cache\CacheItem::__set_state(array(
         'docComment' => '/**
  * Bootstrap any application services.
  */',
-        'startLine' => 24,
-        'endLine' => 33,
+        'startLine' => 23,
+        'endLine' => 32,
         'startColumn' => 5,
         'endColumn' => 5,
         'couldThrow' => false,

@@ -2098,37 +2098,37 @@ return [
       array (
         0 => 'Illuminate\\Support\\Facades\\Gate',
         1 => 'define',
-        2 => 27,
+        2 => 26,
       ),
       1 => 
       array (
         0 => 'Illuminate\\Support\\Facades\\Gate',
         1 => 'define',
-        2 => 28,
+        2 => 27,
       ),
       2 => 
       array (
         0 => 'Illuminate\\Support\\Facades\\Gate',
         1 => 'define',
-        2 => 29,
+        2 => 28,
       ),
       3 => 
       array (
         0 => 'Illuminate\\Support\\Facades\\Gate',
         1 => 'define',
-        2 => 30,
+        2 => 29,
       ),
       4 => 
       array (
         0 => 'Illuminate\\Support\\Facades\\Gate',
         1 => 'define',
-        2 => 31,
+        2 => 30,
       ),
       5 => 
       array (
         0 => 'Illuminate\\Support\\Facades\\Gate',
         1 => 'define',
-        2 => 32,
+        2 => 31,
       ),
     ),
   ),
@@ -2887,39 +2887,42 @@ return [
       7 => '/Users/kevindavis/Sites/Laravel/ny-times-best-sellers/app/Http/Requests/ListsOverviewRequest.php',
       8 => '/Users/kevindavis/Sites/Laravel/ny-times-best-sellers/app/Http/Requests/UpdateUserRequest.php',
       9 => '/Users/kevindavis/Sites/Laravel/ny-times-best-sellers/app/Http/Resources/UserResource.php',
-      10 => '/Users/kevindavis/Sites/Laravel/ny-times-best-sellers/app/Policies/BooksPolicy.php',
-      11 => '/Users/kevindavis/Sites/Laravel/ny-times-best-sellers/app/Policies/ListsPolicy.php',
-      12 => '/Users/kevindavis/Sites/Laravel/ny-times-best-sellers/app/Policies/UsersPolicy.php',
-      13 => '/Users/kevindavis/Sites/Laravel/ny-times-best-sellers/database/factories/UserFactory.php',
-      14 => '/Users/kevindavis/Sites/Laravel/ny-times-best-sellers/tests/Feature/Http/Controllers/BestSellersBooksControllerTest.php',
+      10 => '/Users/kevindavis/Sites/Laravel/ny-times-best-sellers/app/Policies/BookPolicy.php',
+      11 => '/Users/kevindavis/Sites/Laravel/ny-times-best-sellers/app/Policies/BooksPolicy.php',
+      12 => '/Users/kevindavis/Sites/Laravel/ny-times-best-sellers/app/Policies/ListPolicy.php',
+      13 => '/Users/kevindavis/Sites/Laravel/ny-times-best-sellers/app/Policies/ListsPolicy.php',
+      14 => '/Users/kevindavis/Sites/Laravel/ny-times-best-sellers/app/Policies/UserPolicy.php',
+      15 => '/Users/kevindavis/Sites/Laravel/ny-times-best-sellers/app/Policies/UsersPolicy.php',
+      16 => '/Users/kevindavis/Sites/Laravel/ny-times-best-sellers/database/factories/UserFactory.php',
+      17 => '/Users/kevindavis/Sites/Laravel/ny-times-best-sellers/tests/Feature/Http/Controllers/BestSellersBooksControllerTest.php',
     ),
   ),
-  '/Users/kevindavis/Sites/Laravel/ny-times-best-sellers/app/Policies/BooksPolicy.php' => 
+  '/Users/kevindavis/Sites/Laravel/ny-times-best-sellers/app/Policies/BookPolicy.php' => 
   array (
-    'fileHash' => '3e6d1044dae72b6030d3749b73e7479f184b7aa2d87ab3ac34c0b8be99ea9ec7',
+    'fileHash' => '360854d8d9490ca7665633f936d34726fb9f6b68001fdfeb085fac542d7cdd57',
     'dependentFiles' => 
     array (
       0 => '/Users/kevindavis/Sites/Laravel/ny-times-best-sellers/app/Providers/AppServiceProvider.php',
     ),
   ),
-  '/Users/kevindavis/Sites/Laravel/ny-times-best-sellers/app/Policies/ListsPolicy.php' => 
+  '/Users/kevindavis/Sites/Laravel/ny-times-best-sellers/app/Policies/ListPolicy.php' => 
   array (
-    'fileHash' => '023786ea2da51b6a2d1ccfa44fd00344126f21f86a3739ca814e85e06b3da82d',
+    'fileHash' => '6ae01a13cc7318be4a8901a3ce573e0a1cd0a5211c0b6ad84db2c046fe4658b7',
     'dependentFiles' => 
     array (
       0 => '/Users/kevindavis/Sites/Laravel/ny-times-best-sellers/app/Providers/AppServiceProvider.php',
     ),
   ),
-  '/Users/kevindavis/Sites/Laravel/ny-times-best-sellers/app/Policies/UsersPolicy.php' => 
+  '/Users/kevindavis/Sites/Laravel/ny-times-best-sellers/app/Policies/UserPolicy.php' => 
   array (
-    'fileHash' => '172d3183677f050637a38b9d043bf1409e5ca7ca0a88ee4281bd278357c6f758',
+    'fileHash' => '10f52202380c5361f7e41b2c2c1290763a4f99b3d1a6c78a662a22207b7576d9',
     'dependentFiles' => 
     array (
     ),
   ),
   '/Users/kevindavis/Sites/Laravel/ny-times-best-sellers/app/Providers/AppServiceProvider.php' => 
   array (
-    'fileHash' => '0a6bafb294d4e9f2abfaa675bf347d6794ff57ca02c10807ca9475987aef230b',
+    'fileHash' => '568b85d3cca20457ecff3653928934e893c6da3ed612305b0a7dffe24e8021de',
     'dependentFiles' => 
     array (
     ),
@@ -3178,12 +3181,15 @@ return [
     'fileHash' => 'a83ea10b65680fb615af39bdde2f5d98c1ae73e16a5c89df8697aafc18cda13b',
     'dependentFiles' => 
     array (
-      0 => '/Users/kevindavis/Sites/Laravel/ny-times-best-sellers/app/Policies/BooksPolicy.php',
-      1 => '/Users/kevindavis/Sites/Laravel/ny-times-best-sellers/app/Policies/ListsPolicy.php',
-      2 => '/Users/kevindavis/Sites/Laravel/ny-times-best-sellers/app/Policies/UsersPolicy.php',
-      3 => '/Users/kevindavis/Sites/Laravel/ny-times-best-sellers/app/Users/Enums/Role.php',
-      4 => '/Users/kevindavis/Sites/Laravel/ny-times-best-sellers/database/seeders/RolesAndPermissionsSeeder.php',
-      5 => '/Users/kevindavis/Sites/Laravel/ny-times-best-sellers/tests/Feature/Http/Controllers/BestSellersBooksControllerTest.php',
+      0 => '/Users/kevindavis/Sites/Laravel/ny-times-best-sellers/app/Policies/BookPolicy.php',
+      1 => '/Users/kevindavis/Sites/Laravel/ny-times-best-sellers/app/Policies/BooksPolicy.php',
+      2 => '/Users/kevindavis/Sites/Laravel/ny-times-best-sellers/app/Policies/ListPolicy.php',
+      3 => '/Users/kevindavis/Sites/Laravel/ny-times-best-sellers/app/Policies/ListsPolicy.php',
+      4 => '/Users/kevindavis/Sites/Laravel/ny-times-best-sellers/app/Policies/UserPolicy.php',
+      5 => '/Users/kevindavis/Sites/Laravel/ny-times-best-sellers/app/Policies/UsersPolicy.php',
+      6 => '/Users/kevindavis/Sites/Laravel/ny-times-best-sellers/app/Users/Enums/Role.php',
+      7 => '/Users/kevindavis/Sites/Laravel/ny-times-best-sellers/database/seeders/RolesAndPermissionsSeeder.php',
+      8 => '/Users/kevindavis/Sites/Laravel/ny-times-best-sellers/tests/Feature/Http/Controllers/BestSellersBooksControllerTest.php',
     ),
   ),
   '/Users/kevindavis/Sites/Laravel/ny-times-best-sellers/app/Users/Enums/Role.php' => 
@@ -4937,11 +4943,11 @@ return [
       ),
     )),
   ),
-  '/Users/kevindavis/Sites/Laravel/ny-times-best-sellers/app/Policies/BooksPolicy.php' => 
+  '/Users/kevindavis/Sites/Laravel/ny-times-best-sellers/app/Policies/BookPolicy.php' => 
   array (
     0 => 
     \PHPStan\Dependency\ExportedNode\ExportedClassNode::__set_state(array(
-       'name' => 'App\\Policies\\BooksPolicy',
+       'name' => 'App\\Policies\\BookPolicy',
        'phpDoc' => NULL,
        'abstract' => false,
        'final' => false,
@@ -5079,11 +5085,11 @@ return [
       ),
     )),
   ),
-  '/Users/kevindavis/Sites/Laravel/ny-times-best-sellers/app/Policies/ListsPolicy.php' => 
+  '/Users/kevindavis/Sites/Laravel/ny-times-best-sellers/app/Policies/ListPolicy.php' => 
   array (
     0 => 
     \PHPStan\Dependency\ExportedNode\ExportedClassNode::__set_state(array(
-       'name' => 'App\\Policies\\ListsPolicy',
+       'name' => 'App\\Policies\\ListPolicy',
        'phpDoc' => NULL,
        'abstract' => false,
        'final' => false,
@@ -5163,11 +5169,11 @@ return [
       ),
     )),
   ),
-  '/Users/kevindavis/Sites/Laravel/ny-times-best-sellers/app/Policies/UsersPolicy.php' => 
+  '/Users/kevindavis/Sites/Laravel/ny-times-best-sellers/app/Policies/UserPolicy.php' => 
   array (
     0 => 
     \PHPStan\Dependency\ExportedNode\ExportedClassNode::__set_state(array(
-       'name' => 'App\\Policies\\UsersPolicy',
+       'name' => 'App\\Policies\\UserPolicy',
        'phpDoc' => NULL,
        'abstract' => false,
        'final' => false,
@@ -5336,9 +5342,8 @@ return [
              'namespace' => 'App\\Providers',
              'uses' => 
             array (
-              'bookspolicy' => 'App\\Policies\\BooksPolicy',
-              'listspolicy' => 'App\\Policies\\ListsPolicy',
-              'userspolicy' => 'App\\Policies\\UsersPolicy',
+              'bookpolicy' => 'App\\Policies\\BookPolicy',
+              'listpolicy' => 'App\\Policies\\ListPolicy',
               'gate' => 'Illuminate\\Support\\Facades\\Gate',
               'serviceprovider' => 'Illuminate\\Support\\ServiceProvider',
             ),
@@ -5371,9 +5376,8 @@ return [
              'namespace' => 'App\\Providers',
              'uses' => 
             array (
-              'bookspolicy' => 'App\\Policies\\BooksPolicy',
-              'listspolicy' => 'App\\Policies\\ListsPolicy',
-              'userspolicy' => 'App\\Policies\\UsersPolicy',
+              'bookpolicy' => 'App\\Policies\\BookPolicy',
+              'listpolicy' => 'App\\Policies\\ListPolicy',
               'gate' => 'Illuminate\\Support\\Facades\\Gate',
               'serviceprovider' => 'Illuminate\\Support\\ServiceProvider',
             ),

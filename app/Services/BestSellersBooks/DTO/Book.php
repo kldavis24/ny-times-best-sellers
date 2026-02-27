@@ -4,6 +4,9 @@ namespace App\Services\BestSellersBooks\DTO;
 
 use Illuminate\Contracts\Support\Arrayable;
 
+/**
+ * @implements Arrayable<string, mixed>
+ */
 final class Book implements Arrayable
 {
     public function __construct(private readonly array $bookData)
@@ -19,7 +22,15 @@ final class Book implements Arrayable
     /**
      * Get the instance as an array.
      *
-     * @return array<TKey, TValue>
+     * @return array{
+     *     title: mixed,
+     *     author: mixed,
+     *     publisher: mixed,
+     *     description: mixed,
+     *     rank: mixed,
+     *     weeks_on_list: mixed,
+     *     isbns: array<mixed>
+     * }
      */
     public function toArray(): array
     {

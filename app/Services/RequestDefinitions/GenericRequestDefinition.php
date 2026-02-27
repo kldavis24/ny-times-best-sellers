@@ -34,8 +34,6 @@ abstract class GenericRequestDefinition
 
     abstract public function cacheTtl(): int;
 
-    abstract public function externalServiceID(): ?int;
-
     abstract public function externalService(): ?ExternalService;
 
     abstract public function options(): array;

@@ -15,7 +15,7 @@ class CacheAware extends AbstractMiddleware
             RequestInterface $request,
             array $options,
         ) use ($handler) {
-            if (!$this->definition?->isCacheAware()) {
+            if (!$this->definition->isCacheAware()) {
                 return $handler($request, $options);
             }
 

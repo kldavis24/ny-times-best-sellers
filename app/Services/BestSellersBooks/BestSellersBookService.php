@@ -2,34 +2,31 @@
 
 namespace App\Services\BestSellersBooks;
 
-use App\Services\AbstractExternalService;
-use App\Services\BestSellersBooks\DTO\BestSellersList;
-use App\Services\BestSellersBooks\DTO\Book;
-use App\Services\BestSellersBooks\Enums\BookList;
-use App\Services\BestSellersBooks\RequestDefinitions\GetBooksByListAndDate;
-use App\Services\BestSellersBooks\RequestDefinitions\GetBooksByListName;
-use App\Services\BestSellersBooks\RequestDefinitions\GetListsOverview;
-use App\Services\Enums\ExternalService;
 use Exception;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Carbon;
-use Illuminate\Validation\UnauthorizedException;
 use InvalidArgumentException;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection;
+use App\Services\Enums\ExternalService;
+use App\Services\AbstractExternalService;
+use App\Services\BestSellersBooks\DTO\Book;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Validation\UnauthorizedException;
+use App\Services\BestSellersBooks\Enums\BookList;
+use Illuminate\Http\Client\Response as HttpResponse;
+use App\Services\BestSellersBooks\DTO\BestSellersList;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use App\Services\BestSellersBooks\RequestDefinitions\GetListsOverview;
+use App\Services\BestSellersBooks\RequestDefinitions\GetBooksByListName;
+use App\Services\BestSellersBooks\RequestDefinitions\GetBooksByListAndDate;
 
 class BestSellersBookService extends AbstractExternalService
 {
-    public static function externalServiceID(): int
-    {
-        return self::externalService()->id();
-    }
-
     public static function externalService(): ExternalService
     {
-        return ExternalService::NewYorkTimesBooks;
+        return ExternalService::NewYorkTimesBestSellersBooks;
     }
 
+    /** @return Collection<int, Book> */
     public function getBooks(): Collection
     {
         $response = $this->getListsOverview();
@@ -39,6 +36,7 @@ class BestSellersBookService extends AbstractExternalService
         return collect($books)->flatten(1)->mapInto(Book::class);
     }
 
+    /** @return Collection<int, BestSellersList> */
     public function getLists(): Collection
     {
         $response = $this->getListsOverview();
@@ -73,6 +71,7 @@ class BestSellersBookService extends AbstractExternalService
         return $response->json();
     }
 
+    /** @return Collection<int, Book> */
     public function getBooksByListName(BookList|string $bookList): Collection
     {
         $listName = BookList::tryFromMixed($bookList);
@@ -94,6 +93,7 @@ class BestSellersBookService extends AbstractExternalService
         return collect($books)->mapInto(Book::class);
     }
 
+    /** @return Collection<int, Book> */
     public function getBooksByListAndDate(
         BookList|string $bookList,
         Carbon|string $date,
@@ -123,7 +123,7 @@ class BestSellersBookService extends AbstractExternalService
         return collect($books)->mapInto(Book::class);
     }
 
-    private function handleResponseErrors($response)
+    private function handleResponseErrors(HttpResponse $response)
     {
         $errors = data_get($response->json(), 'errors', []);
 

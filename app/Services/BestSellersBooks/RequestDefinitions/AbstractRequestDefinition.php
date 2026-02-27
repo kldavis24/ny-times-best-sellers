@@ -25,11 +25,6 @@ abstract class AbstractRequestDefinition extends RequestDefinition
         return [];
     }
 
-    public function externalServiceID(): ?int
-    {
-        return BestSellersBookService::externalServiceID();
-    }
-
     public function externalService(): ?ExternalService
     {
         return BestSellersBookService::externalService();

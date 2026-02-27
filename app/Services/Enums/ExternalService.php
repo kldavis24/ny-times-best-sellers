@@ -4,12 +4,5 @@ namespace App\Services\Enums;
 
 enum ExternalService: string
 {
-    case NewYorkTimesBooks = 'nyt_books';
-
-    public function id(): int
-    {
-        return match ($this) {
-            self::NewYorkTimesBooks => 1
-        };
-    }
+    case NewYorkTimesBestSellersBooks = 'nyt_best_sellers_books';
 }

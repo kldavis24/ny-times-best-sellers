@@ -7,8 +7,29 @@ on:
     branches: ["**"]
 
 jobs:
+  phpstan:
+    name: PHPStan
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.4"
+          extensions: mbstring, pdo, pdo_sqlite
+          coverage: none
+
+      - name: Install dependencies
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Run PHPStan
+        run: composer phpstan
+
   unit-tests:
     name: Unit Tests
+    needs: phpstan
     runs-on: ubuntu-latest
 
     steps:
@@ -37,6 +58,7 @@ jobs:
 
   feature-tests:
     name: Feature Tests
+    needs: phpstan
     runs-on: ubuntu-latest
 
     steps:

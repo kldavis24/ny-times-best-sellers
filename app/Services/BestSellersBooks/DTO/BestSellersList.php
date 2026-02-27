@@ -4,6 +4,9 @@ namespace App\Services\BestSellersBooks\DTO;
 
 use Illuminate\Contracts\Support\Arrayable;
 
+/**
+ * @implements Arrayable<string, mixed>
+ */
 final class BestSellersList implements Arrayable
 {
     public function __construct(private readonly array $listData)
@@ -19,7 +22,11 @@ final class BestSellersList implements Arrayable
     /**
      * Get the instance as an array.
      *
-     * @return array<TKey, TValue>
+     * @return array{
+     *     id: mixed,
+     *     name: mixed,
+     *     encoding: mixed
+     * }
      */
     public function toArray(): array
     {

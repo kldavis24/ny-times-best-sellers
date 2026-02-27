@@ -1,0 +1,13 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Property App\\Services\\RequestDefinitions\\Exceptions\\ValidationException\:\:\$definition \(App\\Services\\RequestDefinitions\\RequestDefinition\) does not accept App\\Services\\RequestDefinitions\\GenericRequestDefinition\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/RequestDefinitions/Exceptions/ValidationException.php
+
+		-
+			message: '#^Trait App\\Services\\RequestDefinitions\\Traits\\AlwaysConsideredUnique is used zero times and is not analysed\.$#'
+			identifier: trait.unused
+			count: 1
+			path: app/Services/RequestDefinitions/Traits/AlwaysConsideredUnique.php

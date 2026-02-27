@@ -89,7 +89,8 @@ class BestSellerBookServiceTest extends TestCase
 
         $response = (new BestSellersBookService())->getBooksByListName($listName);
 
-        $this->assertNotNull($response);
+        $this->assertNotEmpty($response);
+        $this->assertCount(count(data_get($payload, 'results.books', [])), $response);
     }
 
     public function testGetBooksByListNameUnauthorized()
@@ -156,7 +157,8 @@ class BestSellerBookServiceTest extends TestCase
             date: $date,
         );
 
-        $this->assertNotNull($response);
+        $this->assertNotEmpty($response);
+        $this->assertCount(count(data_get($payload, 'results.books', [])), $response);
     }
 
     public function testGetBooksByListAndDateUnauthorized()

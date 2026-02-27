@@ -3,7 +3,7 @@
 namespace Tests\Unit\Services\BestSellersBooks;
 
 use App\Services\BestSellersBooks\BestSellersBookService;
-use App\Services\BestSellersBooks\Enums\BookList;
+use App\Services\BestSellersBooks\Enums\ListName;
 use Illuminate\Support\Carbon;
 use Tests\TestCase;
 use Illuminate\Support\Facades\Http;
@@ -85,7 +85,7 @@ class BestSellerBookServiceTest extends TestCase
             'api.nytimes.com/*' => Http::response($payload, Response::HTTP_OK),
         ]);
 
-        $listName = BookList::HardcoverNonfiction;
+        $listName = ListName::HardcoverNonfiction;
 
         $response = (new BestSellersBookService())->getBooksByListName($listName);
 
@@ -104,7 +104,7 @@ class BestSellerBookServiceTest extends TestCase
         ]);
 
         // Should throw the expected exception
-        $listName = BookList::HardcoverNonfiction;
+        $listName = ListName::HardcoverNonfiction;
 
         (new BestSellersBookService())->getBooksByListName($listName);
     }
@@ -120,7 +120,7 @@ class BestSellerBookServiceTest extends TestCase
             'api.nytimes.com/*' => Http::response($payload, Response::HTTP_NOT_FOUND),
         ]);
 
-        $listName = BookList::HardcoverNonfiction;
+        $listName = ListName::HardcoverNonfiction;
 
         // Should throw the expected exception
         (new BestSellersBookService())->getBooksByListName($listName);
@@ -148,12 +148,12 @@ class BestSellerBookServiceTest extends TestCase
             'api.nytimes.com/*' => Http::response($payload, Response::HTTP_OK),
         ]);
 
-        $listName = BookList::HardcoverNonfiction;
+        $listName = ListName::HardcoverNonfiction;
 
         $date = Carbon::make('2025-06-06');
 
         $response = (new BestSellersBookService())->getBooksByListAndDate(
-            bookList: $listName,
+            name: $listName,
             date: $date,
         );
 
@@ -172,12 +172,12 @@ class BestSellerBookServiceTest extends TestCase
         ]);
 
         // Should throw the expected exception
-        $listName = BookList::HardcoverNonfiction;
+        $listName = ListName::HardcoverNonfiction;
 
         $date = Carbon::make('2025-06-06');
 
         (new BestSellersBookService())->getBooksByListAndDate(
-            bookList: $listName,
+            name: $listName,
             date: $date,
         );
     }
@@ -193,12 +193,12 @@ class BestSellerBookServiceTest extends TestCase
             'api.nytimes.com/*' => Http::response($payload, Response::HTTP_NOT_FOUND),
         ]);
 
-        $listName = BookList::HardcoverNonfiction;
+        $listName = ListName::HardcoverNonfiction;
 
         $date = Carbon::make('2025-06-06');
 
         (new BestSellersBookService())->getBooksByListAndDate(
-            bookList: $listName,
+            name: $listName,
             date: $date,
         );
     }
@@ -217,7 +217,7 @@ class BestSellerBookServiceTest extends TestCase
         $date = Carbon::make('2025-06-06');
 
         (new BestSellersBookService())->getBooksByListAndDate(
-            bookList: 'invalid',
+            name: 'invalid',
             date: $date,
         );
     }
@@ -232,10 +232,10 @@ class BestSellerBookServiceTest extends TestCase
             'api.nytimes.com/*' => Http::response($payload, Response::HTTP_NOT_FOUND),
         ]);
 
-        $listName = BookList::HardcoverNonfiction;
+        $listName = ListName::HardcoverNonfiction;
 
         (new BestSellersBookService())->getBooksByListAndDate(
-            bookList: $listName,
+            name: $listName,
             date: 'invalid',
         );
     }

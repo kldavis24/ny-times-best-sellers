@@ -2,11 +2,11 @@
 
 namespace App\Services\BestSellersBooks\RequestDefinitions;
 
-use App\Services\BestSellersBooks\Enums\BookList;
+use App\Services\BestSellersBooks\Enums\ListName;
 
 class GetBooksByListName extends AbstractRequestDefinition
 {
-    public function __construct(protected BookList $listName)
+    public function __construct(protected ListName $listName)
     {
         //
     }

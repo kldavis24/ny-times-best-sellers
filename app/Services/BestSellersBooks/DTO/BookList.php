@@ -7,16 +7,16 @@ use Illuminate\Contracts\Support\Arrayable;
 /**
  * @implements Arrayable<string, mixed>
  */
-final class Book implements Arrayable
+final class BookList implements Arrayable
 {
-    public function __construct(private readonly array $bookData)
+    public function __construct(private readonly array $listData)
     {
         //
     }
 
-    public static function create(array $bookData): Book
+    public static function create(array $listData): BookList
     {
-        return new self($bookData);
+        return new self($listData);
     }
 
     /**
@@ -26,6 +26,6 @@ final class Book implements Arrayable
      */
     public function toArray(): array
     {
-        return $this->bookData;
+        return $this->listData;
     }
 }

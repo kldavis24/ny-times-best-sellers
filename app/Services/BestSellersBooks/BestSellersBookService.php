@@ -11,9 +11,9 @@ use App\Services\AbstractExternalService;
 use App\Services\BestSellersBooks\DTO\Book;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Validation\UnauthorizedException;
-use App\Services\BestSellersBooks\Enums\BookList;
+use App\Services\BestSellersBooks\Enums\ListName;
 use Illuminate\Http\Client\Response as HttpResponse;
-use App\Services\BestSellersBooks\DTO\BestSellersList;
+use App\Services\BestSellersBooks\DTO\BookList;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use App\Services\BestSellersBooks\RequestDefinitions\GetListsOverview;
 use App\Services\BestSellersBooks\RequestDefinitions\GetBooksByListName;
@@ -36,14 +36,14 @@ class BestSellersBookService extends AbstractExternalService
         return collect($books)->flatten(1)->mapInto(Book::class);
     }
 
-    /** @return Collection<int, BestSellersList> */
+    /** @return Collection<int, BookList> */
     public function getLists(): Collection
     {
         $response = $this->getListsOverview();
 
         $lists = data_get($response, 'results.lists', []);
 
-        return collect($lists)->mapInto(BestSellersList::class);
+        return collect($lists)->mapInto(BookList::class);
     }
 
     public function getListsOverview(Carbon|string|null $date = null): array|string
@@ -72,9 +72,9 @@ class BestSellersBookService extends AbstractExternalService
     }
 
     /** @return Collection<int, Book> */
-    public function getBooksByListName(BookList|string $bookList): Collection
+    public function getBooksByListName(ListName|string $name): Collection
     {
-        $listName = BookList::tryFromMixed($bookList);
+        $listName = ListName::tryFromMixed($name);
 
         if (is_null($listName)) {
             throw new InvalidArgumentException('Improper book list name provided');
@@ -95,10 +95,10 @@ class BestSellersBookService extends AbstractExternalService
 
     /** @return Collection<int, Book> */
     public function getBooksByListAndDate(
-        BookList|string $bookList,
+        ListName|string $name,
         Carbon|string $date,
     ): Collection {
-        $listName = BookList::tryFromMixed($bookList);
+        $listName = ListName::tryFromMixed($name);
 
         if (is_null($listName)) {
             throw new InvalidArgumentException('Improper book list name provided');

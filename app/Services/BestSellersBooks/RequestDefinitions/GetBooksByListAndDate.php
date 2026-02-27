@@ -2,13 +2,13 @@
 
 namespace App\Services\BestSellersBooks\RequestDefinitions;
 
-use App\Services\BestSellersBooks\Enums\BookList;
+use App\Services\BestSellersBooks\Enums\ListName;
 use Illuminate\Support\Carbon;
 
 class GetBooksByListAndDate extends AbstractRequestDefinition
 {
     public function __construct(
-        protected BookList $listName,
+        protected ListName $listName,
         protected Carbon $date
     ) {
         //

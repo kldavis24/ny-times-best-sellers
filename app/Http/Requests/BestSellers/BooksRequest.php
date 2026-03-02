@@ -2,13 +2,13 @@
 
 namespace App\Http\Requests\BestSellers;
 
-class ListNamesRequest extends ListsOverviewRequest
+class BooksRequest extends ListsOverviewRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return $this->user()?->can('viewListNames') ?? false;
+        return $this->user()?->can('viewBooks') ?? false;
     }
 }

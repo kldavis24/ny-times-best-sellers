@@ -223,7 +223,7 @@ class BookControllerTest extends TestCase
 
         $response = $this
             ->actingAs($user)
-            ->getJson(route('v1.books_by_list', ['list' => ListName::AudioFiction]));
+            ->getJson(route('v1.books_by_list_name', ['list_name' => ListName::AudioFiction]));
 
         $response
             ->assertOk()
@@ -253,7 +253,7 @@ class BookControllerTest extends TestCase
 
         $this
             ->actingAs($user)
-            ->getJson(route('v1.books_by_list', ['list' => ListName::AudioFiction]))
+            ->getJson(route('v1.books_by_list_name', ['list_name' => ListName::AudioFiction]))
             ->assertForbidden();
 
         // Expect this to bypass the role assignment above
@@ -261,7 +261,7 @@ class BookControllerTest extends TestCase
 
         $this
             ->actingAs($user)
-            ->getJson(route('v1.books_by_list', ['list' => ListName::AudioFiction]))
+            ->getJson(route('v1.books_by_list_name', ['list_name' => ListName::AudioFiction]))
             ->assertOk();
 
         // Non-admins with the same permissions as above should not have access
@@ -269,7 +269,7 @@ class BookControllerTest extends TestCase
 
         $this
             ->actingAs($user)
-            ->getJson(route('v1.books_by_list', ['list' => ListName::AudioFiction]))
+            ->getJson(route('v1.books_by_list_name', ['list_name' => ListName::AudioFiction]))
             ->assertForbidden();
 
         // One last permissions sync to expect a successful response
@@ -277,7 +277,7 @@ class BookControllerTest extends TestCase
 
         $this
             ->actingAs($user)
-            ->getJson(route('v1.books_by_list', ['list' => ListName::AudioFiction]))
+            ->getJson(route('v1.books_by_list_name', ['list_name' => ListName::AudioFiction]))
             ->assertOk();
     }
 
@@ -310,8 +310,8 @@ class BookControllerTest extends TestCase
             ->actingAs($user)
             ->getJson(
                 route(
-                    'v1.books_by_list_and_date',
-                    ['list' => $list, 'date' => $date]
+                    'v1.books_by_list_name_and_date',
+                    ['list_name' => $list, 'published_date' => $date]
                 )
             );
 
@@ -350,8 +350,8 @@ class BookControllerTest extends TestCase
             ->actingAs($user)
             ->getJson(
                 route(
-                    'v1.books_by_list_and_date',
-                    ['list' => $list, 'date' => $date]
+                    'v1.books_by_list_name_and_date',
+                    ['list_name' => $list, 'published_date' => $date]
                 )
             )
             ->assertForbidden();
@@ -363,8 +363,8 @@ class BookControllerTest extends TestCase
             ->actingAs($user)
             ->getJson(
                 route(
-                    'v1.books_by_list_and_date',
-                    ['list' => $list, 'date' => $date]
+                    'v1.books_by_list_name_and_date',
+                    ['list_name' => $list, 'published_date' => $date]
                 )
             )
             ->assertOk();
@@ -376,8 +376,8 @@ class BookControllerTest extends TestCase
             ->actingAs($user)
             ->getJson(
                 route(
-                    'v1.books_by_list_and_date',
-                    ['list' => $list, 'date' => $date]
+                    'v1.books_by_list_name_and_date',
+                    ['list_name' => $list, 'published_date' => $date]
                 )
             )
             ->assertForbidden();
@@ -389,11 +389,167 @@ class BookControllerTest extends TestCase
             ->actingAs($user)
             ->getJson(
                 route(
-                    'v1.books_by_list_and_date',
-                    ['list' => $list, 'date' => $date]
+                    'v1.books_by_list_name_and_date',
+                    ['list_name' => $list, 'published_date' => $date]
                 )
             )
             ->assertOk();
+    }
+
+    public function testBooksWithDateSuccess()
+    {
+        $payload = payload('nyt_best_sellers_books/list_overview/success_with_date.json');
+
+        Http::fake([
+            'api.nytimes.com/*' => Http::response(collect($payload), Response::HTTP_OK),
+        ]);
+
+        /** @var User $user */
+        $user = User::factory()->create();
+
+        $user->givePermissionTo(Permission::ViewAllBooks);
+
+        $lists = data_get($payload, 'results.lists.*.books');
+
+        $books = collect($lists)
+            ->flatten(1)
+            ->mapInto(Book::class);
+
+        $expected = BookResource::collection($books)
+            ->response()
+            ->getData(true);
+
+        $publishedDate = data_get($payload, 'results.published_date');
+
+        $response = $this
+            ->actingAs($user)
+            ->getJson(route('v1.books', ['published_date' => $publishedDate]));
+
+        $response
+            ->assertOk()
+            ->assertExactJson($expected);
+    }
+
+    public function testBooksWithDateValidation()
+    {
+        /** @var User $user */
+        $user = User::factory()->create();
+
+        $user->givePermissionTo(Permission::ViewAllBooks);
+
+        $response = $this
+            ->actingAs($user)
+            ->getJson(route('v1.books', ['published_date' => 'invalid']));
+
+        $response->assertUnprocessable();
+
+        $errors = data_get($response, 'errors');
+
+        $this->assertArrayHasKey('published_date', $errors);
+        $this->assertEquals(
+            'The published date field must match the format Y-m-d.',
+            data_get($errors, 'published_date.0')
+        );
+    }
+
+    public function testListNamesWithDateSuccess()
+    {
+        $payload = payload('nyt_best_sellers_books/list_overview/success_with_date.json');
+
+        Http::fake([
+            'api.nytimes.com/*' => Http::response(collect($payload), Response::HTTP_OK),
+        ]);
+
+        $overview = data_get($payload, 'results.lists', []);
+
+        $lists = collect($overview)->mapInto(BookList::class);
+
+        $expected = ListResource::collection($lists)
+            ->response()
+            ->getData(true);
+
+        /** @var User $user */
+        $user = User::factory()->create();
+
+        $user->givePermissionTo(Permission::ViewListNames);
+
+        $publishedDate = data_get($payload, 'results.published_date');
+
+        $response = $this
+            ->actingAs($user)
+            ->getJson(route('v1.lists', ['published_date' => $publishedDate]));
+
+        $response
+            ->assertOk()
+            ->assertExactJson($expected);
+    }
+
+    public function testListNamesWithDateValidation()
+    {
+        /** @var User $user */
+        $user = User::factory()->create();
+
+        $user->givePermissionTo(Permission::ViewListNames);
+
+        $response = $this
+            ->actingAs($user)
+            ->getJson(route('v1.lists', ['published_date' => 'invalid']));
+
+        $response->assertUnprocessable();
+
+        $errors = data_get($response, 'errors');
+
+        $this->assertArrayHasKey('published_date', $errors);
+        $this->assertEquals(
+            'The published date field must match the format Y-m-d.',
+            data_get($errors, 'published_date.0')
+        );
+    }
+
+    public function testListsOverviewWithDateSuccess()
+    {
+        $payload = payload('nyt_best_sellers_books/list_overview/success_with_date.json');
+
+        Http::fake([
+            'api.nytimes.com/*' => Http::response(collect($payload), Response::HTTP_OK),
+        ]);
+
+        /** @var User $user */
+        $user = User::factory()->create();
+
+        $user->givePermissionTo(Permission::ViewAllLists);
+
+        $publishedDate = data_get($payload, 'results.published_date');
+
+        $response = $this
+            ->actingAs($user)
+            ->getJson(route('v1.lists_overview', ['published_date' => $publishedDate]));
+
+        $response
+            ->assertOk()
+            ->assertExactJson($payload);
+    }
+
+    public function testListsOverviewWithDateValidation()
+    {
+        /** @var User $user */
+        $user = User::factory()->create();
+
+        $user->givePermissionTo(Permission::ViewAllLists);
+
+        $response = $this
+            ->actingAs($user)
+            ->getJson(route('v1.lists_overview', ['published_date' => 'invalid']));
+
+        $response->assertUnprocessable();
+
+        $errors = data_get($response, 'errors');
+
+        $this->assertArrayHasKey('published_date', $errors);
+        $this->assertEquals(
+            'The published date field must match the format Y-m-d.',
+            data_get($errors, 'published_date.0')
+        );
     }
 
     public function testBooksByListNameValidation()
@@ -405,15 +561,15 @@ class BookControllerTest extends TestCase
 
         $response = $this
             ->actingAs($user)
-            ->getJson(route('v1.books_by_list', ['list' => 'invalid']));
+            ->getJson(route('v1.books_by_list_name', ['list_name' => 'invalid']));
 
         $response->assertUnprocessable();
 
         $errors = data_get($response, 'errors');
 
-        $this->assertArrayHasKey('list', $errors);
+        $this->assertArrayHasKey('list_name', $errors);
 
-        $this->assertEquals('The selected list is invalid.', data_get($errors, 'list.0'));
+        $this->assertEquals('The selected list name is invalid.', data_get($errors, 'list_name.0'));
     }
 
     public function testBooksByListNameAndDateValidation()
@@ -427,8 +583,8 @@ class BookControllerTest extends TestCase
             ->actingAs($user)
             ->getJson(
                 route(
-                    'v1.books_by_list_and_date',
-                    ['list' => 'invalid', 'date' => 'invalid']
+                    'v1.books_by_list_name_and_date',
+                    ['list_name' => 'invalid', 'published_date' => 'invalid']
                 )
             );
 
@@ -437,14 +593,14 @@ class BookControllerTest extends TestCase
         $errors = data_get($response, 'errors');
 
         $this->assertArrayHasKey('published_date', $errors);
-        $this->assertArrayHasKey('list', $errors);
+        $this->assertArrayHasKey('list_name', $errors);
 
         $list = ListName::ChildrensMiddleGradeHardcover;
 
         $response = $this->getJson(
             route(
-                'v1.books_by_list_and_date',
-                ['list' => $list, 'date' => 'invalid']
+                'v1.books_by_list_name_and_date',
+                ['list_name' => $list, 'published_date' => 'invalid']
             )
         );
 
@@ -453,15 +609,15 @@ class BookControllerTest extends TestCase
         $errors = data_get($response, 'errors');
 
         $this->assertArrayHasKey('published_date', $errors);
-        $this->assertArrayNotHasKey('list', $errors);
+        $this->assertArrayNotHasKey('list_name', $errors);
 
         $date = now()->subMonth();
 
         // We expect this 422 due to the date above not meeting the format expectations
         $response = $this->getJson(
             route(
-                'v1.books_by_list_and_date',
-                ['list' => $list, 'date' => $date]
+                'v1.books_by_list_name_and_date',
+                ['list_name' => $list, 'published_date' => $date]
             )
         );
 
@@ -470,7 +626,7 @@ class BookControllerTest extends TestCase
         $errors = data_get($response, 'errors');
 
         $this->assertArrayHasKey('published_date', $errors);
-        $this->assertArrayNotHasKey('list', $errors);
+        $this->assertArrayNotHasKey('list_name', $errors);
 
         $this->assertEquals(
             'The published date field must match the format Y-m-d.',

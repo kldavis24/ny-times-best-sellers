@@ -19,19 +19,19 @@ class BooksByListNameRequest extends FormRequest
     protected function prepareForValidation(): void
     {
         $this->merge([
-            'list' => $this->route('list'),
+            'list_name' => $this->route('list_name'),
         ]);
     }
 
     public function rules(): array
     {
         return [
-            'list' => ['required', Rule::enum(ListName::class)],
+            'list_name' => ['required', Rule::enum(ListName::class)],
         ];
     }
 
-    public function list(): ListName
+    public function listName(): ListName
     {
-        return ListName::tryFromMixed($this->list);
+        return ListName::tryFromMixed($this->list_name);
     }
 }

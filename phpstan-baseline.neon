@@ -5,9 +5,3 @@ parameters:
 			identifier: assign.propertyType
 			count: 1
 			path: app/Services/RequestDefinitions/Exceptions/ValidationException.php
-
-		-
-			message: '#^Trait App\\Services\\RequestDefinitions\\Traits\\AlwaysConsideredUnique is used zero times and is not analysed\.$#'
-			identifier: trait.unused
-			count: 1
-			path: app/Services/RequestDefinitions/Traits/AlwaysConsideredUnique.php

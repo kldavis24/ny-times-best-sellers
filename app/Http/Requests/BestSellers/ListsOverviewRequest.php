@@ -2,7 +2,10 @@
 
 namespace App\Http\Requests\BestSellers;
 
+use Illuminate\Support\Carbon;
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Carbon as SupportCarbon;
 
 class ListsOverviewRequest extends FormRequest
 {
@@ -22,7 +25,12 @@ class ListsOverviewRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'published_date' => ['sometimes', Rule::date()->format('Y-m-d'),]
         ];
+    }
+
+    public function publishedDate(): ?Carbon
+    {
+        return Carbon::make($this->published_date);
     }
 }

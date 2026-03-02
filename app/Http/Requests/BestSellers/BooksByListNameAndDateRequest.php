@@ -5,6 +5,7 @@ namespace App\Http\Requests\BestSellers;
 use Illuminate\Validation\Rule;
 use App\Services\BestSellersBooks\Enums\ListName;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Carbon;
 
 class BooksByListNameAndDateRequest extends FormRequest
 {
@@ -19,26 +20,26 @@ class BooksByListNameAndDateRequest extends FormRequest
     protected function prepareForValidation(): void
     {
         $this->merge([
-            'list' => $this->route('list'),
-            'published_date' => $this->route('date')
+            'list_name' => $this->route('list_name'),
+            'published_date' => $this->route('published_date')
         ]);
     }
 
     public function rules(): array
     {
         return [
-            'list' => ['required', Rule::enum(ListName::class)],
+            'list_name' => ['required', Rule::enum(ListName::class)],
             'published_date' => ['required', Rule::date()->format('Y-m-d'),]
         ];
     }
 
-    public function list(): ListName
+    public function listName(): ListName
     {
-        return ListName::tryFromMixed($this->list);
+        return ListName::tryFromMixed($this->list_name);
     }
 
-    public function publishedDate(): string
+    public function publishedDate(): ?Carbon
     {
-        return $this->published_date;
+        return Carbon::make($this->published_date);
     }
 }

@@ -27,9 +27,9 @@ class BestSellersBookService extends AbstractExternalService
     }
 
     /** @return Collection<int, Book> */
-    public function getBooks(): Collection
+    public function getBooks(?Carbon $publishedDate = null): Collection
     {
-        $response = $this->getListsOverview();
+        $response = $this->getListsOverview($publishedDate);
 
         $books = data_get($response, 'results.lists.*.books', []);
 
@@ -37,9 +37,9 @@ class BestSellersBookService extends AbstractExternalService
     }
 
     /** @return Collection<int, BookList> */
-    public function getLists(): Collection
+    public function getLists(?Carbon $publishedDate = null): Collection
     {
-        $response = $this->getListsOverview();
+        $response = $this->getListsOverview($publishedDate);
 
         $lists = data_get($response, 'results.lists', []);
 
@@ -72,14 +72,8 @@ class BestSellersBookService extends AbstractExternalService
     }
 
     /** @return Collection<int, Book> */
-    public function getBooksByListName(ListName|string $name): Collection
+    public function getBooksByListName(ListName $listName): Collection
     {
-        $listName = ListName::tryFromMixed($name);
-
-        if (is_null($listName)) {
-            throw new InvalidArgumentException('Improper book list name provided');
-        }
-
         $request = new GetBooksByListName($listName);
 
         $response = $request->send();
@@ -94,22 +88,8 @@ class BestSellersBookService extends AbstractExternalService
     }
 
     /** @return Collection<int, Book> */
-    public function getBooksByListAndDate(
-        ListName|string $name,
-        Carbon|string $date,
-    ): Collection {
-        $listName = ListName::tryFromMixed($name);
-
-        if (is_null($listName)) {
-            throw new InvalidArgumentException('Improper book list name provided');
-        }
-
-        $publishedDate = Carbon::make($date);
-
-        if (is_null($publishedDate)) {
-            throw new InvalidArgumentException('Improper date provided');
-        }
-
+    public function getBooksByListNameAndDate(ListName $listName, Carbon $publishedDate): Collection
+    {
         $request = new GetBooksByListAndDate($listName, $publishedDate);
 
         $response = $request->send();

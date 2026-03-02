@@ -1,0 +1,81 @@
+{
+    "status": "OK",
+    "copyright": "Copyright (c) 2026 The New York Times Company. All Rights Reserved.",
+    "num_results": 1,
+    "results": {
+        "previous_published_date": "2026-02-15",
+        "published_date": "2026-02-22",
+        "next_published_date": "2026-03-01",
+        "published_date_description": "",
+        "bestsellers_date": "2026-02-07",
+        "lists": [
+            {
+                "display_name": "Combined Print & E-Book Fiction",
+                "list_name": "Combined Print & E-Book Fiction",
+                "list_name_encoded": "combined-print-and-e-book-fiction",
+                "normal_list_ends_at": 15,
+                "updated": "WEEKLY",
+                "list_id": 704,
+                "uri": "nyt://bestsellerslist/a8e0e7ac-87b8-55e1-b388-bf250d2aefa5",
+                "books": [
+                    {
+                        "age_group": "",
+                        "amazon_product_url": "https://www.amazon.com/dp/B0F5PDJPT7?tag=thenewyorktim-20",
+                        "article_chapter_link": "",
+                        "asterisk": 0,
+                        "author": "J.D. Robb",
+                        "book_image": "https://static01.nyt.com/bestsellers/images/9781250414533.jpg",
+                        "book_image_height": 500,
+                        "book_image_width": 329,
+                        "book_review_link": "",
+                        "book_uri": "nyt://book/ec7f1ee8-11b3-5b96-9157-aec8f1e2ada3",
+                        "contributor": "by J.D. Robb",
+                        "contributor_note": "",
+                        "created_date": "2026-02-11T23:37:30.16Z",
+                        "dagger": 0,
+                        "description": "The 62nd book of the In Death series. The murder of a multibillionaire reveals other crimes that Eve and her team must investigate to see if there is a connection.",
+                        "first_chapter_link": "",
+                        "price": "0.00",
+                        "primary_isbn10": "",
+                        "primary_isbn13": "9781250414533",
+                        "publisher": "St. Martin's",
+                        "rank": 1,
+                        "rank_last_week": 0,
+                        "sunday_review_link": "",
+                        "title": "STOLEN IN DEATH",
+                        "updated_date": "2026-02-11T23:37:30.16Z",
+                        "weeks_on_list": 1,
+                        "isbns": [
+                            {
+                                "isbn10": "",
+                                "isbn13": "9781250414533"
+                            }
+                        ],
+                        "buy_links": [
+                            {
+                                "name": "Amazon",
+                                "url": "https://www.amazon.com/dp/B0F5PDJPT7?tag=thenewyorktim-20"
+                            },
+                            {
+                                "name": "Apple Books",
+                                "url": "https://goto.applebooks.apple/9781250414533?at=10lIEQ"
+                            },
+                            {
+                                "name": "Barnes & Noble",
+                                "url": "https://www.barnesandnoble.com/s/STOLEN%20IN%20DEATH%20by%20J.D.%20Robb"
+                            },
+                            {
+                                "name": "Books-A-Million",
+                                "url": "https://www.anrdoezrs.net/click-7990613-35140?url=https%3A%2F%2Fwww.booksamillion.com%2Fsearch%3Fquery%3DSTOLEN%2520IN%2520DEATH%2520by%2520J.D.%2520Robb"
+                            },
+                            {
+                                "name": "Bookshop.org",
+                                "url": "https://bookshop.org/a/3546/9781250414533"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}

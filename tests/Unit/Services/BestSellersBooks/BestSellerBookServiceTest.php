@@ -126,20 +126,6 @@ class BestSellerBookServiceTest extends TestCase
         (new BestSellersBookService())->getBooksByListName($listName);
     }
 
-    public function testGetBooksByListNameThrowsWithInvalidList()
-    {
-        $this->expectException(InvalidArgumentException::class);
-
-        $payload = payload('nyt_best_sellers_books/books_by_list_name/success.json');
-
-        Http::fake([
-            'api.nytimes.com/*' => Http::response($payload, Response::HTTP_NOT_FOUND),
-        ]);
-
-        // Should throw the expected exception
-        (new BestSellersBookService())->getBooksByListName('invalid');
-    }
-
     public function testGetBooksByListAndDateSuccess()
     {
         $payload = payload('nyt_best_sellers_books/books_by_list_name/success.json');
@@ -152,9 +138,9 @@ class BestSellerBookServiceTest extends TestCase
 
         $date = Carbon::make('2025-06-06');
 
-        $response = (new BestSellersBookService())->getBooksByListAndDate(
-            name: $listName,
-            date: $date,
+        $response = (new BestSellersBookService())->getBooksByListNameAndDate(
+            listName: $listName,
+            publishedDate: $date,
         );
 
         $this->assertNotEmpty($response);
@@ -176,9 +162,9 @@ class BestSellerBookServiceTest extends TestCase
 
         $date = Carbon::make('2025-06-06');
 
-        (new BestSellersBookService())->getBooksByListAndDate(
-            name: $listName,
-            date: $date,
+        (new BestSellersBookService())->getBooksByListNameAndDate(
+            listName: $listName,
+            publishedDate: $date,
         );
     }
 
@@ -197,46 +183,73 @@ class BestSellerBookServiceTest extends TestCase
 
         $date = Carbon::make('2025-06-06');
 
-        (new BestSellersBookService())->getBooksByListAndDate(
-            name: $listName,
-            date: $date,
+        (new BestSellersBookService())->getBooksByListNameAndDate(
+            listName: $listName,
+            publishedDate: $date,
         );
     }
 
-    public function testGetBooksByListAndDateThrowsWithInvalidList()
+    public function testGetBooksSuccess()
     {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Improper book list name provided');
-
-        $payload = payload('nyt_best_sellers_books/books_by_list_name/success.json');
+        $payload = payload('nyt_best_sellers_books/list_overview/success.json');
 
         Http::fake([
-            'api.nytimes.com/*' => Http::response($payload, Response::HTTP_NOT_FOUND),
+            'api.nytimes.com/*' => Http::response($payload, Response::HTTP_OK),
         ]);
 
-        $date = Carbon::make('2025-06-06');
+        $books = (new BestSellersBookService())->getBooks();
 
-        (new BestSellersBookService())->getBooksByListAndDate(
-            name: 'invalid',
-            date: $date,
-        );
+        $expectedCount = collect(data_get($payload, 'results.lists.*.books', []))->flatten(1)->count();
+
+        $this->assertNotEmpty($books);
+        $this->assertCount($expectedCount, $books);
     }
 
-    public function testGetBooksByListAndDateThrowsWithInvalidDate()
+    public function testGetBooksWithDate()
     {
-        $this->expectException(InvalidArgumentException::class);
-
-        $payload = payload('nyt_best_sellers_books/books_by_list_name/success.json');
+        $payload = payload('nyt_best_sellers_books/list_overview/success_with_date.json');
 
         Http::fake([
-            'api.nytimes.com/*' => Http::response($payload, Response::HTTP_NOT_FOUND),
+            'api.nytimes.com/*' => Http::response($payload, Response::HTTP_OK),
         ]);
 
-        $listName = ListName::HardcoverNonfiction;
+        $date = Carbon::make(data_get($payload, 'results.published_date'));
 
-        (new BestSellersBookService())->getBooksByListAndDate(
-            name: $listName,
-            date: 'invalid',
-        );
+        $books = (new BestSellersBookService())->getBooks($date);
+
+        $expectedCount = collect(data_get($payload, 'results.lists.*.books', []))->flatten(1)->count();
+
+        $this->assertNotEmpty($books);
+        $this->assertCount($expectedCount, $books);
+    }
+
+    public function testGetListsSuccess()
+    {
+        $payload = payload('nyt_best_sellers_books/list_overview/success.json');
+
+        Http::fake([
+            'api.nytimes.com/*' => Http::response($payload, Response::HTTP_OK),
+        ]);
+
+        $lists = (new BestSellersBookService())->getLists();
+
+        $this->assertNotEmpty($lists);
+        $this->assertCount(count(data_get($payload, 'results.lists', [])), $lists);
+    }
+
+    public function testGetListsWithDate()
+    {
+        $payload = payload('nyt_best_sellers_books/list_overview/success_with_date.json');
+
+        Http::fake([
+            'api.nytimes.com/*' => Http::response($payload, Response::HTTP_OK),
+        ]);
+
+        $date = Carbon::make(data_get($payload, 'results.published_date'));
+
+        $lists = (new BestSellersBookService())->getLists($date);
+
+        $this->assertNotEmpty($lists);
+        $this->assertCount(count(data_get($payload, 'results.lists', [])), $lists);
     }
 }

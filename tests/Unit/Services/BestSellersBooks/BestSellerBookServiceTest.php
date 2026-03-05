@@ -41,6 +41,23 @@ class BestSellerBookServiceTest extends TestCase
         (new BestSellersBookService())->getListsOverview();
     }
 
+    public function testGetListsOverviewWithNullDateRemovesPublishedDateParam()
+    {
+        Http::fake([
+            'api.nytimes.com/*' => Http::response(
+                payload('nyt_best_sellers_books/list_overview/success.json'),
+                Response::HTTP_OK
+            ),
+        ]);
+
+        (new BestSellersBookService())->getListsOverview(null);
+
+        Http::assertSent(
+            fn($request) => !array_key_exists('published_date', $request->data())
+        );
+    }
+
+
     public function testGetListOverviewSuccess()
     {
         $payload = payload('nyt_best_sellers_books/list_overview/success.json');

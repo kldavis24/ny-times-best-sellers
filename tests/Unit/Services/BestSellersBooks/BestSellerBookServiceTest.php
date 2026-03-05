@@ -4,16 +4,43 @@ namespace Tests\Unit\Services\BestSellersBooks;
 
 use App\Services\BestSellersBooks\BestSellersBookService;
 use App\Services\BestSellersBooks\Enums\ListName;
+use Exception;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Config;
 use Tests\TestCase;
 use Illuminate\Support\Facades\Http;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Validation\UnauthorizedException;
-use InvalidArgumentException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class BestSellerBookServiceTest extends TestCase
 {
+    public function testServiceThrowsWhenUrlIsNotSet()
+    {
+        $this->expectException(Exception::class);
+
+        Config::set('services.nyt_books.api_url', null);
+
+        $url = Config::get('services.nyt_books.api_url');
+
+        $this->assertNull($url);
+
+        (new BestSellersBookService())->getListsOverview();
+    }
+
+    public function testServiceThrowsWhenKeyIsNotSet()
+    {
+        $this->expectException(Exception::class);
+
+        Config::set('services.nyt_books.api_key', null);
+
+        $url = Config::get('services.nyt_books.api_key');
+
+        $this->assertNull($url);
+
+        (new BestSellersBookService())->getListsOverview();
+    }
+
     public function testGetListOverviewSuccess()
     {
         $payload = payload('nyt_best_sellers_books/list_overview/success.json');

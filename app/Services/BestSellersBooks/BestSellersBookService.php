@@ -3,7 +3,6 @@
 namespace App\Services\BestSellersBooks;
 
 use Exception;
-use InvalidArgumentException;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use App\Services\Enums\ExternalService;
@@ -14,10 +13,8 @@ use Illuminate\Validation\UnauthorizedException;
 use App\Services\BestSellersBooks\Enums\ListName;
 use Illuminate\Http\Client\Response as HttpResponse;
 use App\Services\BestSellersBooks\DTO\BookList;
+use Illuminate\Support\Facades\Http;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use App\Services\BestSellersBooks\RequestDefinitions\GetListsOverview;
-use App\Services\BestSellersBooks\RequestDefinitions\GetBooksByListName;
-use App\Services\BestSellersBooks\RequestDefinitions\GetBooksByListAndDate;
 
 class BestSellersBookService extends AbstractExternalService
 {
@@ -60,9 +57,17 @@ class BestSellersBookService extends AbstractExternalService
          */
         $publishedDate = Carbon::make($date);
 
-        $request = new GetListsOverview($publishedDate);
+        $params = [
+            'api-key' => $this->key(),
+            'published_date' => $publishedDate?->format('Y-m-d'),
+        ];
 
-        $response = $request->send();
+        $cleanedParams = collect($params)->filter()->all();
+
+        $response = Http::get(
+            "{$this->externalUrl()}/svc/books/v3/lists/overview.json",
+            $cleanedParams
+        );
 
         if ($response->failed()) {
             $this->handleResponseErrors($response);
@@ -74,9 +79,10 @@ class BestSellersBookService extends AbstractExternalService
     /** @return Collection<int, Book> */
     public function getBooksByListName(ListName $listName): Collection
     {
-        $request = new GetBooksByListName($listName);
-
-        $response = $request->send();
+        $response = Http::get(
+            "{$this->externalUrl()}/svc/books/v3/lists/current/{$listName->value}.json",
+            ['api-key' => $this->key()]
+        );
 
         if ($response->failed()) {
             $this->handleResponseErrors($response);
@@ -90,9 +96,12 @@ class BestSellersBookService extends AbstractExternalService
     /** @return Collection<int, Book> */
     public function getBooksByListNameAndDate(ListName $listName, Carbon $publishedDate): Collection
     {
-        $request = new GetBooksByListAndDate($listName, $publishedDate);
+        $date = $publishedDate->format('Y-m-d');
 
-        $response = $request->send();
+        $response = Http::get(
+            "{$this->externalUrl()}/svc/books/v3/lists/{$date}/{$listName->value}.json",
+            ['api-key' => $this->key()]
+        );
 
         if ($response->failed()) {
             $this->handleResponseErrors($response);
@@ -101,6 +110,28 @@ class BestSellersBookService extends AbstractExternalService
         $books = data_get($response->json(), 'results.books', []);
 
         return collect($books)->mapInto(Book::class);
+    }
+
+    private function key(): string
+    {
+        $key = config('services.nyt_books.api_key');
+
+        if (is_null($key)) {
+            throw new Exception(message: 'NYT Books external API key is not properly set.');
+        }
+
+        return $key;
+    }
+
+    private function externalUrl(): string
+    {
+        $url = config('services.nyt_books.api_url');
+
+        if (is_null($url)) {
+            throw new Exception(message: 'NYT Books external URL is not properly set.');
+        }
+
+        return $url;
     }
 
     private function handleResponseErrors(HttpResponse $response)
